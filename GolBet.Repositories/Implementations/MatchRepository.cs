@@ -15,7 +15,7 @@ namespace GolBet.Repositories.Implementations
     {
         public MatchRepository(AppDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null)
+        public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null, string? search = null)
         {
             var query = _dbSet
                 .Include(m => m.HomeTeam) //Include viene siendo similar a un JOIN en SQL
@@ -26,6 +26,14 @@ namespace GolBet.Repositories.Implementations
 
             if (status.HasValue)
                 query = query.Where(m => m.Status == status.Value);
+
+            //BÚSQUEDA
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var mySearch = search.Trim();
+                query = query.Where(m => m.HomeTeam.Name.Contains(mySearch)
+                                      || m.AwayTeam.Name.Contains(mySearch));
+            }
 
             return await query.OrderBy(m => m.Date).ToListAsync();
         }
