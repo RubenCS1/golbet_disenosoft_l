@@ -27,6 +27,9 @@ namespace GolBet.Services.Mapping
             CreateMap<TeamFormDto, Team>().ReverseMap();
             CreateMap<MatchFormDto, Match>().ReverseMap();
 
+            CreateMap<Bet, BetDto>()
+            .ForMember(dto => dto.PotentialPayout,
+               options => options.MapFrom(bet => bet.Amount * bet.OddsAtPlacement));
 
         }
     }
