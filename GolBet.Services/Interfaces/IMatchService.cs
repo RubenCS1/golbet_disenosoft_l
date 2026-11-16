@@ -21,6 +21,9 @@ namespace GolBet.Services.Interfaces
         Task UpdateAsync(MatchFormDto dto);
         Task DeactivateAsync(int id);
 
+        Task StartMatchAsync(int id);
+        Task<ResolutionSummaryDto> CloseMatchAsync(MatchResultFormDto dto);
+
     }
 
 }
